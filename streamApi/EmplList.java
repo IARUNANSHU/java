@@ -25,84 +25,68 @@ public class EmplList {
         employeeList.add(new Empl(266, "Sanvi Pandey", 26, "Female", "Product Development", 2015, 28900.0));
         employeeList.add(new Empl(277, "Anuj Chettiar", 31, "Male", "Product Development", 2012, 35700.0));
 
-//        1.	How many male and female employees are there in the organization?
-//        2.	Print the name of all departments in the organization?
-//        3.	What is the average age of male and female employees?
-//        4.	Get the details of highest paid employee in the organization?
-//        5.	Get the names of all employees who have joined after 2015?
-//        6.	Count the number of employees in each department?
-//        7.	What is the average salary of each department?
-//        8.	Get the details of youngest male employee in the product development department?
-//        9.	Who has the most working experience in the organization?
-//        10.	How many male and female employees are there in the sales and marketing team?
-//        11.	What is the average salary of male and female employees?
-//        12.	List down the names of all employees in each department?
-//        13.	What is the average salary and total salary of the whole organization?
-//        14.	Separate the employees who are younger or equal to 25 years from those employees who are older than 25 years.
-//        15.	Who is the oldest employee in the organization? What is his age and which department he belongs to?
-
-        //1
+        //1 How many male and female employees are there in the organization?
         Map<String,Long>mp=employeeList.stream().collect(Collectors.groupingBy(Empl::gender,Collectors.counting()));
         System.out.println(mp);
 
-        //2
+        //2 Print the name of all departments in the organization?
         Set<String>mp1=employeeList.stream().map(Empl::department).collect(Collectors.toSet());
         System.out.println(mp1);
 
-        //3
+        //3 What is the average age of male and female employees?
         Map<String,Double>mp2=employeeList.stream().collect(Collectors.groupingBy(Empl::gender,Collectors.averagingInt(Empl::age)));
         System.out.println(mp2);
 
-        //4
+        //4 Get the details of highest paid employee in the organization?
         Optional mp3= employeeList.stream().max(Comparator.comparing(Empl::salary));
         System.out.println(mp3);
 
-        //5
+        //5 Get the names of all employees who have joined after 2015?
         List<String>mp4=employeeList.stream().filter(e->e.yearOfJoining()>2015).map(e->e.name()).toList();
         System.out.println(mp4);
 
-        //6
+        //6 Count the number of employees in each department?
         Map<String,Long>mp5=employeeList.stream().collect(Collectors.groupingBy(Empl::department,Collectors.counting()));
         System.out.println(mp5);
 
-        //7
+        //7 What is the average salary of each department?
         Map<String,Double>mp6=employeeList.stream().collect(Collectors.groupingBy(Empl::department,Collectors.averagingDouble(Empl::salary)));
         System.out.println(mp6);
 
-        //8
+        //8 Get the details of youngest male employee in the product development department?
         Optional<Empl>mp7=employeeList.stream().filter(empl -> empl.department()=="Product Development").min(Comparator.comparing(Empl::age));
         System.out.println(mp7);
 
-        //9
+        //9 Who has the most working experience in the organization?
         Optional mp8=employeeList.stream().min(Comparator.comparing(Empl::yearOfJoining));
         System.out.println(mp8);
 
-        //10
+        //10 How many male and female employees are there in the sales and marketing team?
         Map<String,Long>mp9=employeeList.stream().filter(e->e.department()=="Sales And Marketing").collect(Collectors.groupingBy(Empl::gender,Collectors.counting()));
         System.out.println(mp9);
 
-        //11
+        //11 What is the average salary of male and female employees?
         Map<String,Double>mp10=employeeList.stream().collect(Collectors.groupingBy(Empl::gender,Collectors.averagingDouble(Empl::salary)));
         System.out.println(mp10);
 
-        //12
+        //12 List down the names of all employees in each department?
         Map<String,List<String>>mp11=employeeList.stream().collect(Collectors.groupingBy(Empl::department,Collectors.mapping(e->e.name(),Collectors.toList())));
         System.out.println(mp11);
 
-        //13
+        //13 What is the average salary and total salary of the whole organization?
         DoubleSummaryStatistics mp12=employeeList.stream().collect(Collectors.summarizingDouble(Empl::salary));
         System.out.println(mp12);
 
-        //14
+        //14 Separate the employees who are younger or equal to 25 years from those employees who are older than 25 years.
         Map<Boolean,List<Empl>>mp13=employeeList.stream().collect(Collectors.partitioningBy(e->e.age()>=25));
-        System.out.println(mp13.entrySet().stream().map(E->E.getValue().stream().map(e->e.name()).toList()));
+        //System.out.println(mp13.entrySet().stream().map(E->E.getValue().stream().map(e->e.name()).toList()));
         System.out.println(
                 mp13.get(true).stream().map(Empl::name).toList()
         );
         System.out.println(mp13.get(false).stream().map(Empl::name));
         //System.out.println(mp13);
 
-        //15
+        //15 Who is the oldest employee in the organization? What is his age and which department he belongs to?
         Optional<Empl>mp14=employeeList.stream().max(Comparator.comparing(Empl::age));
         System.out.println(mp14.get().name() + " " + mp14.get().age() + " " + mp14.get().department());
     }
